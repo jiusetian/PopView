@@ -55,6 +55,7 @@ public class BubbleLinearLayout extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        //measure完以后会调用这个方法，此时可以获取view的宽高
         if (w > 0 && h > 0){
             setUp(w, h);
         }
@@ -78,6 +79,8 @@ public class BubbleLinearLayout extends LinearLayout {
     }
 
     private void setUp(int width, int height){
+        //参数主要用来创建rect对象，getpaddingleft获取到的是这个ViewGroup的左边距， 就是childview的左边
+        //距离父view的左边的距离
         setUp(getPaddingLeft(),  width - getPaddingRight(),
                 getPaddingTop(), height - getPaddingBottom());
         setBackgroundDrawable(bubbleDrawable);

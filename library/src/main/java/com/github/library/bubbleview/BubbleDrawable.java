@@ -91,7 +91,7 @@ public class BubbleDrawable extends Drawable {
     private void setUp(Canvas canvas) {
         switch (bubbleType) {
             case COLOR:
-                mPaint.setColor(bubbleColor);
+                mPaint.setColor(bubbleColor); //给画笔设置颜色
                 break;
             case BITMAP:
                 if (bubbleBitmap == null)
@@ -105,29 +105,30 @@ public class BubbleDrawable extends Drawable {
                 setUpShaderMatrix();
                 break;
         }
-        setUpPath(mArrowLocation, mPath);
+        setUpPath(mArrowLocation, mPath); //主要是给patch赋值
         canvas.drawPath(mPath, mPaint);
     }
 
     private void setUpLeftPath(RectF rect, Path path) {
 
         if (mArrowCenter) { //角标是否在左边的中间
-            //计算角标起始点坐标
+            //计算角标起始点坐标到顶点的距离
             mArrowPosition = (rect.bottom - rect.top) / 2 - mArrowWidth / 2;
         }
 
-        //mAngle是四边形的圆角度大小
-        path.moveTo(mArrowWidth + rect.left + mAngle, rect.top);
-        path.lineTo(rect.width() - mAngle, rect.top);
+        //mAngle是四边形的圆角度大小，mArrowWidth代表角标的宽度，因为角标在左边，所以左边要留一个mArrowWidth
+        //宽度的位置给角标，所以起始点会加mArrowWidth。
+        path.moveTo(mArrowWidth + rect.left + mAngle, rect.top);//起始点
+        path.lineTo(rect.width() - mAngle, rect.top);//移到右上角开始画弧那个点
         path.arcTo(new RectF(rect.right - mAngle, rect.top, rect.right,
-                mAngle + rect.top), 270, 90);
-        path.lineTo(rect.right, rect.bottom - mAngle);
+                mAngle + rect.top), 270, 90); //270°开始旋转90°，其实就是右上角那个圆弧
+        path.lineTo(rect.right, rect.bottom - mAngle);//移到右下角画弧开始点
         path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle,
-                rect.right, rect.bottom), 0, 90);
+                rect.right, rect.bottom), 0, 90);//0°开始画一个90°的弧
         path.lineTo(rect.left + mArrowWidth + mAngle, rect.bottom);
         path.arcTo(new RectF(rect.left + mArrowWidth, rect.bottom - mAngle,
                 mAngle + rect.left + mArrowWidth, rect.bottom), 90, 90);
-        path.lineTo(rect.left + mArrowWidth, mArrowHeight + mArrowPosition);
+        path.lineTo(rect.left + mArrowWidth, mArrowHeight + mArrowPosition);//角标的下面的那个点
         path.lineTo(rect.left, mArrowPosition + mArrowHeight / 2);
         path.lineTo(rect.left + mArrowWidth, mArrowPosition);
         path.lineTo(rect.left + mArrowWidth, rect.top + mAngle);
