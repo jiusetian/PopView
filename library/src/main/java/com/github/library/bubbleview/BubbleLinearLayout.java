@@ -21,6 +21,9 @@ public class BubbleLinearLayout extends LinearLayout {
     private BubbleDrawable.ArrowLocation mArrowLocation;
     private int bubbleColor;
     private boolean mArrowCenter;
+    private int mArrowHorizontal; //角标水平方向的位置，0代表左边，1右边
+    private int mArrowMargin; //角标水平方向左边或者右边的边距
+
     public BubbleLinearLayout(Context context) {
         super(context);
         initView(null);
@@ -48,6 +51,8 @@ public class BubbleLinearLayout extends LinearLayout {
             int location = array.getInt(R.styleable.BubbleView_arrowLocation, 0);
             mArrowLocation = BubbleDrawable.ArrowLocation.mapIntToValue(location);
             mArrowCenter = array.getBoolean(R.styleable.BubbleView_arrowCenter, false);
+            mArrowHorizontal= (int) array.getInt(R.styleable.BubbleView_arrowHorizontal,1);
+            mArrowMargin= (int) array.getDimension(R.styleable.BubbleView_arrowMargin,10);
             array.recycle();
         }
     }
@@ -75,6 +80,8 @@ public class BubbleLinearLayout extends LinearLayout {
                 .arrowPosition(mArrowPosition)
                 .bubbleColor(bubbleColor)
                 .arrowCenter(mArrowCenter)
+                .arrowHorizaontalPos(mArrowHorizontal)
+                .arrowMargin(mArrowMargin)
                 .build();
     }
 

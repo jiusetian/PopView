@@ -32,6 +32,8 @@ public class BubbleDrawable extends Drawable {
     private ArrowLocation mArrowLocation;
     private BubbleType bubbleType;
     private boolean mArrowCenter;
+    private int mArrowHorizontal; //角标水平方向的位置，0代表左边，1右边
+    private int mArrowMargin; //角标水平方向左边或者右边的边距
 
     private BubbleDrawable(Builder builder) {
         this.mRect = builder.mRect;
@@ -44,6 +46,8 @@ public class BubbleDrawable extends Drawable {
         this.mArrowLocation = builder.mArrowLocation;
         this.bubbleType = builder.bubbleType;
         this.mArrowCenter = builder.arrowCenter;
+        this.mArrowMargin=builder.mArrowMargin;
+        this.mArrowHorizontal=builder.mArrowHorizontal;
     }
 
     @Override
@@ -124,23 +128,30 @@ public class BubbleDrawable extends Drawable {
                 mAngle + rect.top), 270, 90); //270°开始旋转90°，其实就是右上角那个圆弧
         path.lineTo(rect.right, rect.bottom - mAngle);//移到右下角画弧开始点
         path.arcTo(new RectF(rect.right - mAngle, rect.bottom - mAngle,
-                rect.right, rect.bottom), 0, 90);//0°开始画一个90°的弧
+                rect.right, rect.bottom), 0, 90);//右下角的圆角
         path.lineTo(rect.left + mArrowWidth + mAngle, rect.bottom);
         path.arcTo(new RectF(rect.left + mArrowWidth, rect.bottom - mAngle,
-                mAngle + rect.left + mArrowWidth, rect.bottom), 90, 90);
+                mAngle + rect.left + mArrowWidth, rect.bottom), 90, 90); //左下角的圆角
         path.lineTo(rect.left + mArrowWidth, mArrowHeight + mArrowPosition);//角标的下面的那个点
         path.lineTo(rect.left, mArrowPosition + mArrowHeight / 2);
         path.lineTo(rect.left + mArrowWidth, mArrowPosition);
         path.lineTo(rect.left + mArrowWidth, rect.top + mAngle);
         path.arcTo(new RectF(rect.left + mArrowWidth, rect.top, mAngle
-                + rect.left + mArrowWidth, mAngle + rect.top), 180, 90);
+                + rect.left + mArrowWidth, mAngle + rect.top), 180, 90); //左上角的圆角
         path.close();
     }
 
+    //角标在上面的路径设置
     private void setUpTopPath(RectF rect, Path path) {
 
         if (mArrowCenter) {
             mArrowPosition = (rect.right - rect.left) / 2 - mArrowWidth / 2;
+        } else {
+            if (mArrowHorizontal == 0) { //左边
+                mArrowPosition =mArrowMargin+mAngle;
+            } else if (mArrowHorizontal == 1) { //右边
+                mArrowPosition=rect.right - rect.left -mArrowMargin-mArrowWidth;
+            }
         }
 
         path.moveTo(rect.left + Math.min(mArrowPosition, mAngle), rect.top + mArrowHeight);
@@ -258,9 +269,21 @@ public class BubbleDrawable extends Drawable {
         private BubbleType bubbleType = BubbleType.COLOR;
         private ArrowLocation mArrowLocation = ArrowLocation.LEFT;
         private boolean arrowCenter;
+        private int mArrowHorizontal;
+        private int mArrowMargin;
 
         public Builder rect(RectF rect) {
             this.mRect = rect;
+            return this;
+        }
+
+        public Builder arrowMargin(int margin){
+            this.mArrowMargin=margin;
+            return this;
+        }
+
+        public Builder arrowHorizaontalPos(int pos) {
+            this.mArrowHorizontal = pos;
             return this;
         }
 

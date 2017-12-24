@@ -7,6 +7,9 @@
         <attr name="arrowPosition" format="dimension" />
         <attr name="bubbleColor" format="color" />
         <attr name="arrowCenter" format="boolean" />
+        <attr name="arrowHorizontal" format="integer" />
+        <attr name="arrowMargin" format="dimension" />
+
         <attr name="arrowLocation" format="enum">
             <enum name="left" value="0x00" />
             <enum name="right" value="0x01" />
